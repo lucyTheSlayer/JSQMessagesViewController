@@ -74,18 +74,10 @@
 
 - (void)stopPlay
 {
-    if(!self.audioPlayer.playing){
-        // fade the button from play to pause
-        [UIView transitionWithView:self.playButton
-                          duration:.2
-                           options:UIViewAnimationOptionTransitionCrossDissolve
-                        animations:^{
-                            self.playButton.selected = YES;
-                        }
-                        completion:nil];
-        
-        [self startProgressTimer];
-        [self.audioPlayer play];
+    if(self.audioPlayer.playing){
+        self.playButton.selected = NO;
+        [self stopProgressTimer];
+        [self.audioPlayer stop];
         if (self.delegate) {
             [self.delegate audioPlayDidStoped:self];
         }
@@ -199,7 +191,7 @@
         [self stopProgressTimer];
         [self.audioPlayer stop];
         if (self.delegate) {
-            [self.delegate audioPlayDidStarted:self];
+            [self.delegate audioPlayDidStoped:self];
         }
     }
     else {
@@ -215,7 +207,7 @@
         [self startProgressTimer];
         [self.audioPlayer play];
         if (self.delegate) {
-            [self.delegate audioPlayDidStoped:self];
+            [self.delegate audioPlayDidStarted:self];
         }
     }
 }
