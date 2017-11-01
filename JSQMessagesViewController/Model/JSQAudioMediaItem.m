@@ -72,6 +72,26 @@
     return [self initWithData:nil audioViewAttributes:[[JSQAudioMediaViewAttributes alloc] init]];
 }
 
+- (void)stopPlay
+{
+    if(!self.audioPlayer.playing){
+        // fade the button from play to pause
+        [UIView transitionWithView:self.playButton
+                          duration:.2
+                           options:UIViewAnimationOptionTransitionCrossDissolve
+                        animations:^{
+                            self.playButton.selected = YES;
+                        }
+                        completion:nil];
+        
+        [self startProgressTimer];
+        [self.audioPlayer play];
+        if (self.delegate) {
+            [self.delegate audioPlayDidStoped:self];
+        }
+    }
+}
+
 - (void)dealloc
 {
     _audioData = nil;
@@ -178,6 +198,9 @@
         self.playButton.selected = NO;
         [self stopProgressTimer];
         [self.audioPlayer stop];
+        if (self.delegate) {
+            [self.delegate audioPlayDidStarted:self];
+        }
     }
     else {
         // fade the button from play to pause
@@ -191,6 +214,9 @@
 
         [self startProgressTimer];
         [self.audioPlayer play];
+        if (self.delegate) {
+            [self.delegate audioPlayDidStoped:self];
+        }
     }
 }
 
