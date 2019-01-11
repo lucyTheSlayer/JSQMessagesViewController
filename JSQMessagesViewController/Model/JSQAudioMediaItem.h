@@ -117,6 +117,7 @@ didChangeAudioCategory:(NSString *)category
  */
 - (void)setAudioDataWithUrl:(nonnull NSURL *)audioURL;
 - (void)stopPlay;
+- (void)onPlayButton:(UIButton *)sender;
 
 @end
 
